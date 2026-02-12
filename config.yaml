@@ -1,0 +1,256 @@
+# Info Hub 数据源配置
+# 添加新源：在对应分类下加一条即可
+
+rss:
+  - name: Hacker News
+    url: https://news.ycombinator.com/rss
+    category: tech
+
+  - name: TechCrunch
+    url: https://techcrunch.com/feed/
+    category: tech
+
+  - name: Nature News
+    url: https://www.nature.com/nature.rss
+    category: science
+
+  - name: Anthropic Blog
+    url: https://www.anthropic.com/rss.xml
+    category: ai
+
+  # Newsletters (RSS)
+  - name: AI Valley
+    url: https://www.theaivalley.com/feed
+    category: ai
+
+  - name: Every.to
+    url: https://every.to/feed
+    category: ai
+
+  - name: Ben's Bites
+    url: https://bensbites.beehiiv.com/feed
+    category: ai
+
+  - name: AINews (smol.ai)
+    url: https://news.smol.ai/feed
+    category: ai
+
+  - name: Google Keyword Blog
+    url: https://blog.google/rss/
+    category: tech
+
+youtube:
+  # Zara Zhang's curated list
+  - name: Latent Space
+    channel_id: UCWHmrbeOLRAMmKWG-VIPQ-Q
+    category: ai
+
+  - name: "AI & I"
+    channel_id: UCCCe7ELEB4nYPbCHgsm8edg
+    category: ai
+
+  - name: "Google DeepMind Podcast"
+    channel_id: UCmyxyRArhUbGWLowXbB3nmQ
+    category: ai
+
+  - name: The AI Daily Brief
+    channel_id: UCKAyFaKGJ9iVfJcwMbT3y_A
+    category: ai
+
+  - name: TBPN
+    channel_id: UCjJjazFGIzJv8A7sMhjWHmQ
+    category: tech
+
+  - name: "Training Data (Sequoia)"
+    channel_id: UCVVdKznYAMNGJuBb4_BxfAA
+    category: ai
+
+  - name: "Lenny's Podcast"
+    channel_id: UCenBOxgNXIA23iSRagDpMag
+    category: tech
+
+  - name: Behind the Craft
+    channel_id: UC7cIaRZOlg3ORCLbwWAvNKA
+    category: tech
+
+  - name: No Priors
+    channel_id: UC1GXZYPYT09aF2Mfp5lYigg
+    category: ai
+
+  - name: "Unsupervised Learning (Redpoint)"
+    channel_id: UC47p-k3L-2ElEtBNqXL_Q_w
+    category: ai
+
+  - name: "Minus One (SPC)"
+    channel_id: UC2i1v0OkDnJeX2VqNk4_X2g
+    category: ai
+
+  - name: "Lightcone (YC)"
+    channel_id: UCcefcZRL2oaA_uBNeo5UOWg
+    category: ai
+
+twitter:
+  # Zara 列表 + PDF KOL 合并
+  - handle: karpathy
+    name: Andrej Karpathy
+    category: ai
+  
+  - handle: swyx
+    name: Shawn Wang
+    category: ai
+  
+  - handle: gregisenberg
+    name: Greg Isenberg
+    category: ai
+  
+  - handle: lennysan
+    name: Lenny Rachitsky
+    category: tech
+  
+  - handle: joshwoodward
+    name: Josh Woodward
+    category: tech
+  
+  - handle: kevinweil
+    name: Kevin Weil
+    category: ai
+  
+  - handle: petergyang
+    name: Peter Yang
+    category: tech
+  
+  - handle: thenanyu
+    name: Nan Yu
+    category: ai
+  
+  - handle: realmadhuguru
+    name: Madhu Muthukumar
+    category: ai
+  
+  - handle: mckaywrigley
+    name: Mckay Wrigley
+    category: ai
+  
+  - handle: stevenbjohnson
+    name: Steven Johnson
+    category: ai
+  
+  - handle: AmandaAskell
+    name: Amanda Askell
+    category: ai
+  
+  - handle: _catwu
+    name: Catherine Wu
+    category: ai
+  
+  - handle: trq212
+    name: Tyler Cowen
+    category: tech
+  
+  - handle: GoogleLabs
+    name: Google Labs
+    category: ai
+  
+  - handle: george__mack
+    name: George Mack
+    category: tech
+  
+  - handle: raizamrtn
+    name: Raiza Martin
+    category: ai
+  
+  - handle: amasad
+    name: Amjad Masad
+    category: tech
+  
+  - handle: rauchg
+    name: Guillermo Rauch
+    category: tech
+  
+  - handle: rileybrown
+    name: Riley Brown
+    category: ai
+  
+  - handle: alexalbert__
+    name: Alex Albert
+    category: ai
+  
+  - handle: HamelHusain
+    name: Hamel Husain
+    category: ai
+  
+  - handle: levie
+    name: Aaron Levie
+    category: tech
+  
+  - handle: ryolu_
+    name: Ryan Lou
+    category: ai
+  
+  - handle: garrytan
+    name: Garry Tan
+    category: tech
+  
+  - handle: lulumeservey
+    name: Lulu Meservey
+    category: tech
+  
+  - handle: venturetwins
+    name: Venture Twins
+    category: tech
+  
+  - handle: mattturck
+    name: Matt Turck
+    category: ai
+  
+  - handle: joulee
+    name: Julie Zhuo
+    category: tech
+  
+  - handle: GabrielPeterss4
+    name: Gabriel Peterson
+    category: ai
+  
+  - handle: PJaccetturo
+    name: PJ Accetturo
+    category: tech
+  
+  - handle: zarazhangrui
+    name: Zara Zhang
+    category: ai
+  
+  - handle: rryssf_
+    name: Ryyss
+    category: ai
+  
+  - handle: emollick
+    name: Ethan Mollick
+    category: ai
+  
+  - handle: Hesamation
+    name: Hesam Motlagh
+    category: ai
+  
+  - handle: jackfriks
+    name: Jack Friks
+    category: ai
+  
+  - handle: EXM7777
+    name: EXM
+    category: ai
+  
+  - handle: 0xROAS
+    name: ROAS
+    category: ai
+  
+  - handle: vasuman
+    name: Vasuman Ravichandran
+    category: ai
+  
+  - handle: egeberkina
+    name: Ege Berkin
+    category: ai
+  
+  - handle: eptwts
+    name: EPT
+    category: ai
