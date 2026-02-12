@@ -110,6 +110,12 @@ def generate_html(data):
     total_items = len(items)
     sources_count = len(set(item.get('source_name', '') for item in items))
     
+    # 生成当前北京时间（UTC+8）
+    from datetime import timezone, timedelta
+    utc_now = datetime.now(timezone.utc)
+    beijing_time = utc_now + timedelta(hours=8)
+    last_updated = beijing_time.strftime("%Y-%m-%d %H:%M")
+    
     # 完整 HTML 模板
     html = f"""<!DOCTYPE html>
 <html lang="zh-CN">
@@ -126,6 +132,13 @@ def generate_html(data):
     </style>
 </head>
 <body class="bg-white text-gray-900">
+    <!-- 最新更新时间 -->
+    <div class="bg-gray-50 py-2 border-b border-gray-200">
+        <div class="container mx-auto px-4 max-w-4xl text-right">
+            <p class="text-xs text-gray-500">最新更新于 {last_updated} (UTC+8)</p>
+        </div>
+    </div>
+    
     <!-- 头部 -->
     <header class="bg-white border-b border-gray-300 py-6">
         <div class="container mx-auto px-4 max-w-4xl">

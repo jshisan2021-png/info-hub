@@ -87,24 +87,41 @@ def call_gemini_api(prompt, temperature=0.3):
         }
     }
     
-    try:
-        response = requests.post(
-            f"{GEMINI_API_URL}?key={GEMINI_API_KEY}",
-            headers=headers,
-            json=payload,
-            timeout=60
-        )
-        response.raise_for_status()
-        
-        result = response.json()
-        text = result['candidates'][0]['content']['parts'][0]['text']
-        return text
-        
-    except Exception as e:
-        print(f"❌ Gemini API 调用失败: {e}")
-        if hasattr(e, 'response') and e.response:
-            print(f"响应: {e.response.text}")
-        return None
+    import time
+    
+    max_retries = 3
+    base_delay = 5
+    
+    for attempt in range(max_retries):
+        try:
+            response = requests.post(
+                f"{GEMINI_API_URL}?key={GEMINI_API_KEY}",
+                headers=headers,
+                json=payload,
+                timeout=60
+            )
+            response.raise_for_status()
+            
+            result = response.json()
+            if 'candidates' in result and result['candidates']:
+                return result['candidates'][0]['content']['parts'][0]['text']
+            else:
+                print(f"⚠️ API 返回空候选: {result}")
+                return None
+                
+        except requests.exceptions.RequestException as e:
+            if hasattr(e, 'response') and e.response is not None and e.response.status_code == 429:
+                delay = base_delay * (2 ** attempt)
+                print(f"⚠️ 429 Too Many Requests. Retrying in {delay}s... (Attempt {attempt+1}/{max_retries})")
+                time.sleep(delay)
+            else:
+                print(f"❌ Gemini API 调用失败: {e}")
+                if hasattr(e, 'response') and e.response:
+                    print(f"响应: {e.response.text}")
+                return None
+                
+    print("❌ 重试次数耗尽")
+    return None
 
 
 def curate_content(all_items):

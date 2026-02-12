@@ -44,7 +44,7 @@ def fetch_user_tweets(handle, user_name, category):
         env['AUTH_TOKEN'] = AUTH_TOKEN
         env['CT0'] = CT0
         
-        # 调用 bird CLI（使用 --json 输出）
+        # 调用 bird CLI（使用 --json 输出），支持 429 重试
         cmd = ['bird', 'user-tweets', handle, '--count', '5', '--json']
         result = subprocess.run(
             cmd,
@@ -54,9 +54,26 @@ def fetch_user_tweets(handle, user_name, category):
             env=env
         )
         
+        # 检测 429 错误并重试一次
         if result.returncode != 0:
-            print(f"  ✗ bird CLI 失败: {result.stderr}")
-            return items
+            if '429' in result.stderr or 'rate limit' in result.stderr.lower():
+                print(f"  ⚠️  遇到限流（429），暂停 60 秒后重试...")
+                import time
+                time.sleep(60)
+                result = subprocess.run(
+                    cmd,
+                    capture_output=True,
+                    text=True,
+                    timeout=30,
+                    env=env
+                )
+                if result.returncode != 0:
+                    print(f"  ✗ 重试后仍失败: {result.stderr}")
+                    return items
+                print(f"  ✓ 重试成功")
+            else:
+                print(f"  ✗ bird CLI 失败: {result.stderr}")
+                return items
         
         # 过滤掉 info 行，找到 JSON 内容
         output_lines = result.stdout.strip().split('\n')
@@ -170,10 +187,10 @@ def main():
         items = fetch_user_tweets(handle, name, category)
         all_items.extend(items)
         
-        # 每抓 3 个账号暂停 5 秒，防止 rate limit
+        # 每抓 3 个账号暂停 10 秒，防止 rate limit
         if (i + 1) % 3 == 0 and i < len(twitter_accounts) - 1:
-            print(f"  ⏳ 暂停 5 秒（防限流）...")
-            time.sleep(5)
+            print(f"  ⏳ 暂停 10 秒（防限流）...")
+            time.sleep(10)
     
     # 按时间排序（最新的在前）
     all_items.sort(

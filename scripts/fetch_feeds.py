@@ -44,9 +44,48 @@ def fetch_rss(url, source_name, category):
         resp = requests.get(url, timeout=15, headers={"User-Agent": "InfoHub/1.0"})
         feed = feedparser.parse(resp.content)
         
+        # 如果 feedparser 解析失败且是 XML 格式错误，尝试 BeautifulSoup 容错解析
         if feed.bozo and feed.bozo_exception:
-            print(f"  ⚠️  解析警告: {feed.bozo_exception}")
+            print(f"  ⚠️  feedparser 解析警告: {feed.bozo_exception}")
+            if 'not well-formed' in str(feed.bozo_exception).lower() or not feed.entries:
+                print(f"  🔄 尝试 BeautifulSoup 容错解析...")
+                try:
+                    from bs4 import BeautifulSoup
+                    soup = BeautifulSoup(resp.content, 'xml')
+                    entries = soup.find_all('item') or soup.find_all('entry')
+                    
+                    for entry in entries[:20]:
+                        title = entry.find('title')
+                        link = entry.find('link')
+                        pub_date = entry.find('pubDate') or entry.find('published') or entry.find('updated')
+                        summary = entry.find('description') or entry.find('summary') or entry.find('content')
+                        
+                        # 解析时间
+                        published = None
+                        if pub_date and pub_date.text:
+                            try:
+                                from email.utils import parsedate_to_datetime
+                                published = parsedate_to_datetime(pub_date.text).isoformat()
+                            except:
+                                published = pub_date.text
+                        
+                        item = {
+                            'title': title.text.strip() if title else '无标题',
+                            'link': link.text.strip() if link and link.text else (link.get('href', '') if link else ''),
+                            'published': published,
+                            'summary': (summary.text.strip()[:300] if summary else '')[:300],
+                            'source_name': source_name,
+                            'category': category,
+                            'type': 'rss'
+                        }
+                        items.append(item)
+                    
+                    print(f"  ✓ BeautifulSoup 成功抓取 {len(items)} 条")
+                    return items
+                except Exception as bs_error:
+                    print(f"  ✗ BeautifulSoup 也失败: {bs_error}")
         
+        # 使用 feedparser 的正常结果
         for entry in feed.entries[:20]:  # 只取最新20条
             # 统一时间格式
             published = None
@@ -89,9 +128,10 @@ def fetch_youtube(channel_id, channel_name, category):
         
         print(f"[YouTube] 抓取 {channel_name} ({channel_id})...")
         
-        # 使用 yt-dlp 获取频道最新视频
+        # 使用 yt-dlp 获取频道最新视频（使用 venv 中的 yt-dlp）
+        yt_dlp_path = str(ROOT_DIR / 'venv' / 'bin' / 'yt-dlp')
         cmd = [
-            'yt-dlp',
+            yt_dlp_path,
             '--flat-playlist',
             '--playlist-end', '20',  # 只获取最新20个
             '--dump-json',
